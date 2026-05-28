@@ -23,9 +23,9 @@
 
 ```bash
 bash scripts/setup.sh        # 装 Python 依赖、ffmpeg-full、下载 xhs-mcp 二进制、生成配置
-python run.py login          # 启动服务后用此命令取二维码，用小红书 App 扫码登录
+python3 run.py login          # 启动服务后用此命令取二维码，用小红书 App 扫码登录
 bash scripts/start_mcp.sh    # 启动发布服务(保持运行); 后台运行加 --bg
-python run.py doctor         # 自检：ffmpeg(libass)/edge-tts/字体/登录态 全绿即可
+python3 run.py doctor         # 自检：ffmpeg(libass)/edge-tts/字体/登录态 全绿即可
 ```
 
 > 关键依赖：小红书发布服务需要一个带 `libass` 的 ffmpeg。`setup.sh` 会装 Homebrew 的
@@ -34,11 +34,11 @@ python run.py doctor         # 自检：ffmpeg(libass)/edge-tts/字体/登录态
 ## 每天的用法
 
 ```bash
-python run.py new 2026-05-28          # 在 input/2026-05-28/ 生成 brief.yaml 模板
+python3 run.py new 2026-05-28          # 在 input/2026-05-28/ 生成 brief.yaml 模板
 # 把当天的视频/图片拷到 input/2026-05-28/，编辑 brief.yaml
-python run.py generate 2026-05-28     # 生成成片到 output/2026-05-28/ (--preview 顺便打开)
-python run.py preview  2026-05-28     # 打开成片并打印标题/正文/标签
-python run.py publish  2026-05-28     # 审核后发布(默认会让你确认; --auto 跳过确认)
+python3 run.py generate 2026-05-28     # 生成成片到 output/2026-05-28/ (--preview 顺便打开)
+python3 run.py preview  2026-05-28     # 打开成片并打印标题/正文/标签
+python3 run.py publish  2026-05-28     # 审核后发布(默认会让你确认; --auto 跳过确认)
 ```
 
 `brief.yaml` 写法见 [`examples/brief.video.yaml`](examples/brief.video.yaml) 和
@@ -61,7 +61,7 @@ HOUR=9 MIN=30 bash scripts/install_cron.sh
 AUTO=1 bash scripts/install_cron.sh    # 生成并自动发布(需发布服务常驻+已登录)
 ```
 
-全自动发布还可用小红书原生**定时发布**：`python run.py publish <DATE> --schedule 2026-05-28T20:00:00`。
+全自动发布还可用小红书原生**定时发布**：`python3 run.py publish <DATE> --schedule 2026-05-28T20:00:00`。
 
 ## 配置速览(`config/config.yaml`)
 - `tts.voice`：`zh-CN-XiaoxiaoNeural`(女·温暖) / `zh-CN-YunxiNeural`(男·阳光) / `zh-CN-XiaoyiNeural`(女·年轻)；`rate: "+8%"` 让语速更适合短视频。
@@ -71,7 +71,7 @@ AUTO=1 bash scripts/install_cron.sh    # 生成并自动发布(需发布服务�
 
 ## 排错
 - `doctor` 显示 ffmpeg 缺 `ass` 滤镜 → `brew install ffmpeg-full`。
-- 发布报“not logged in” → cookie 过期，重跑 `python run.py login` 扫码。
+- 发布报“not logged in” → cookie 过期，重跑 `python3 run.py login` 扫码。
 - edge-tts 偶发 403 → 是按 IP 限流，代码已串行+退避重试；别并发狂调。
 - 发布服务首次启动会下载约 150MB 无头浏览器，第一次调用登录相关接口会慢，属正常。
 
@@ -88,5 +88,5 @@ vendor/       xiaohongshu-mcp 二进制 (不入库)
 run.py        命令行入口
 ```
 ```bash
-python run.py --help     # 查看全部子命令
+python3 run.py --help     # 查看全部子命令
 ```

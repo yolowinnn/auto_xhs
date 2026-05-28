@@ -8,6 +8,7 @@ behind one function so Azure/Volcengine/Fish can be slotted in later.
 from __future__ import annotations
 
 import asyncio
+import sys
 import time
 from pathlib import Path
 
@@ -48,6 +49,13 @@ def synthesize(text: str, out_path: Path, *, voice: str, rate: str = "+0%",
                 _edge_synth(text, out_path, voice=voice, rate=rate,
                             volume=volume, pitch=pitch)
             )
+        except (ModuleNotFoundError, ImportError) as e:
+            raise RuntimeError(
+                "edge-tts is not installed for this Python interpreter "
+                f"({sys.executable}). Install it with "
+                "`python3 -m pip install -r requirements.txt`, or run the CLI with "
+                "the interpreter that has the deps (use `python3`, not `python`)."
+            ) from e
         except Exception as e:  # NoAudioReceived, 403 rate-limit, transient network
             last_err = e
             time.sleep(1.5 * (attempt + 1))
