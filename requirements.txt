@@ -1,0 +1,10 @@
+# Core pipeline dependencies
+edge-tts>=7.0.0        # free Microsoft TTS with word-boundary timings
+PyYAML>=6.0            # config
+requests>=2.31.0       # talk to the xiaohongshu-mcp REST API
+Pillow>=10.0.0         # image carousel processing + title cards
+
+# Optional: LLM script generation. The pipeline runs without this
+# (it falls back to a hand-written script in brief.yaml), but installing
+# it + setting ANTHROPIC_API_KEY enables auto script writing.
+anthropic>=0.40.0

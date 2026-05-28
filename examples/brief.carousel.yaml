@@ -1,0 +1,14 @@
+# Example brief for an IMAGE CAROUSEL (图文) post. Copy into input/<DATE>/brief.yaml.
+type: carousel
+persona: 应届月薪30k算法工程师
+hook: 月薪30k的工位长这样           # rendered as the cover title card (image #1)
+title: 算法工程师的工位
+tags: [程序员日常, 工位改造, 算法工程师]
+# visibility: 公开可见
+
+# images: [01.jpg, 03.jpg, 02.jpg]  # optional: force order; default is filename order
+
+body: |
+  今天分享一下我的工位～
+  双显示器加人体工学椅，摸鱼也舒服
+  你们的工位都长啥样?

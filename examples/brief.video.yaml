@@ -1,0 +1,18 @@
+# Example brief for a VIDEO post. Copy into input/<DATE>/brief.yaml and edit.
+type: video
+persona: 应届月薪30k算法工程师
+hook: 应届月薪30k算法工程师的一天   # big on-screen title (<=16 chars)
+title: 算法工程师的一天             # post title (<=18 chars)
+tags: [程序员日常, 算法工程师, 应届生]
+voice: zh-CN-XiaoxiaoNeural        # zh-CN-YunxiNeural (male), zh-CN-XiaoyiNeural (younger)
+# bgm: bgm.mp3                     # optional, file sits next to the materials
+# visibility: 公开可见              # or 仅自己可见 (great for a dry-run post)
+
+# Hand-written narration (used when ANTHROPIC_API_KEY is not set). One line per beat;
+# beats are distributed across your materials in filename order.
+script: |
+  早上九点到公司，先看一眼昨天模型的训练结果
+  数据没问题，开始今天的特征工程
+  中午和组里同事去吃了食堂新窗口
+  下午开了个算法评审，被怼了但也学到不少
+  晚上八点收工，记录一下今天的成长

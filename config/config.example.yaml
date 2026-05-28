@@ -1,0 +1,89 @@
+# ============================================================================
+# auto_xhs pipeline configuration
+# Copy this file to config/config.yaml and adjust. config.yaml is gitignored.
+# Any key you omit falls back to the value here.
+# ============================================================================
+
+project:
+  input_dir: input        # daily materials live in input/<DATE>/
+  output_dir: output       # rendered posts go to output/<DATE>/
+  state_dir: state         # posted.json bookkeeping
+
+# --- Video assembly (ffmpeg) -------------------------------------------------
+ffmpeg:
+  # "auto" prefers a build that has the libass/drawtext filters (ffmpeg-full on
+  # Homebrew), then falls back to ffmpeg on PATH. Or set an explicit path.
+  bin: auto
+  ffprobe_bin: auto
+  encoder: libx264              # libx264 (quality) | h264_videotoolbox (fast drafts)
+  crf: 18
+  preset: medium
+  fps: 30
+  width: 1080
+  height: 1920
+
+video:
+  segment_pad_sec: 0.35        # extra hold after each segment's narration
+  ken_burns: false             # slow zoom on still images (set true to enable)
+  default_image_dur: 3.0       # still duration when a segment has no narration
+  bgm_volume: 0.12             # background music gain (0 = mute) when bgm provided
+
+# --- Text-to-speech ----------------------------------------------------------
+tts:
+  provider: edge               # edge (free, default). Pluggable: azure/volcengine later
+  voice: zh-CN-XiaoxiaoNeural  # XiaoxiaoNeural(f warm) / YunxiNeural(m lively) / XiaoyiNeural(f young)
+  rate: "+8%"                  # punchier for short-form
+  volume: "+0%"
+  pitch: "+0Hz"
+  max_retries: 4               # edge-tts is rate-limited per IP; retry w/ backoff
+
+# --- Burned-in captions (libass / .ass) -------------------------------------
+captions:
+  font: PingFang SC            # libass font family; files in fonts_dir are also searched
+  fonts_dir: assets/fonts
+  subtitle:
+    fontsize: 60
+    primary_color: "&H00FFFFFF"   # ASS colour = &HAABBGGRR (white)
+    outline_color: "&H00000000"   # black
+    outline: 3
+    shadow: 1
+    margin_v: 260                 # px from bottom
+    max_chars_per_cue: 14         # wrap narration into short readable cues
+  title:
+    enabled: true
+    fontsize: 78
+    primary_color: "&H00FFFFFF"   # white text
+    box: true                     # opaque rounded-ish box behind the title
+    box_color: "&H64000000"       # semi-transparent black (alpha 0x64)
+    outline: 4
+    margin_v: 200                 # px from top
+
+# --- LLM script generation (optional) ---------------------------------------
+llm:
+  provider: anthropic            # anthropic | none  (none = always use brief.script)
+  model: claude-sonnet-4-6       # cheap+fast is plenty for short scripts
+  max_tokens: 2000
+  # System prompt that steers tone/persona. Copy the .example to this path.
+  system_prompt_file: prompts/system_prompt.md
+  # API key is read from env ANTHROPIC_API_KEY (preferred) or .anthropic_key file.
+
+# --- Publishing via xiaohongshu-mcp -----------------------------------------
+publish:
+  mcp_base_url: http://localhost:18060
+  mode: review                   # review (default, confirm before posting) | auto
+  default_visibility: 公开可见     # 公开可见 | 仅自己可见 | 仅互关好友可见
+  title_max: 20                  # xiaohongshu hard limit
+  content_max: 1000
+  request_timeout_sec: 600       # video processing can be slow
+  default_tags:
+    - 程序员日常
+    - 算法工程师
+
+# --- Image carousel (图文) ---------------------------------------------------
+carousel:
+  max_images: 9
+  width: 1080
+  height: 1440                   # 3:4, the xiaohongshu-friendly ratio
+  fit: cover                     # cover (scale+crop) | contain (scale+pad)
+  pad_color: "white"
+  add_title_card: true           # render a cover card with the title as image #1
